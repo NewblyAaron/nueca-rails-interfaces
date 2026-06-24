@@ -2,6 +2,14 @@
 
 require 'active_support/all'
 
+unless defined?(TestCollection)
+  class TestCollection < Array
+    def paginate(*_args)
+      self
+    end
+  end
+end
+
 RSpec.describe NuecaRailsInterfaces::V1::QueryInterface do
   describe 'Instance Methods' do
     describe '#call' do
@@ -13,17 +21,16 @@ RSpec.describe NuecaRailsInterfaces::V1::QueryInterface do
             private
 
             def filters
-              @collection = [collection[0]] if query[:a].to_bool
+              @collection = TestCollection.new([collection[0]]) if query[:a].to_bool
             end
 
             def sorts; end
           end
         end
-        let(:collection) { [:a, :b, :c] }
+        let(:collection) { TestCollection.new([:a, :b, :c]) }
 
         before do
           stub_const('WillPaginate', Module.new)
-          collection.class.define_method(:paginate) { |*| self }
         end
 
         context 'when query is nil' do
@@ -107,17 +114,16 @@ RSpec.describe NuecaRailsInterfaces::V1::QueryInterface do
           private
 
           def filters
-            @collection = [collection[0]] if query[:a].to_bool
+            @collection = TestCollection.new([collection[0]]) if query[:a].to_bool
           end
 
           def sorts; end
         end
       end
-      let(:collection) { [:a, :b, :c] }
+      let(:collection) { TestCollection.new([:a, :b, :c]) }
 
       before do
         stub_const('WillPaginate', Module.new)
-        collection.class.define_method(:paginate) { |*| self }
       end
 
       context 'when query is nil' do
