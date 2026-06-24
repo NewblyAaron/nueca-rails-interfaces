@@ -10,3 +10,9 @@ gem 'rspec', '~> 3.0'
 gem 'rubocop-nueca'
 gem 'rubocop-rake'
 gem 'ruby-lsp-rspec', require: false
+
+group :test do
+  gem 'kaminari', '~> 1.2'
+  gem 'pagy', '~> 43.0'
+  gem 'will_paginate', '~> 4.0'
+end
